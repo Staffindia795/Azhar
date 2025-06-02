@@ -1,0 +1,307 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Staff India Consultancy, India's leading recruitment agency since 2020, offers innovative HR and staffing solutions for IT, healthcare, banking, and more.">
+    <meta name="keywords" content="recruitment agency India, IT staffing, healthcare recruitment, payroll outsourcing, HR consulting, temporary staffing">
+    <meta name="author" content="Staff India Consultancy">
+    <meta name="robots" content="index, follow">
+    <title>Staff India Consultancy - Recruitment & Staffing Solutions Across India</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <meta property="og:title" content="Staff India Consultancy - Pan India Recruitment Solutions">
+    <meta property="og:description" content="Transforming recruitment across India with innovative HR solutions for IT, healthcare, banking, and more since 2020.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.staffindiaconsultancy.com">
+    <meta property="og:image" content="/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Staff India Consultancy",
+        "url": "https://www.staffindiaconsultancy.com",
+        "logo": "/logo.png",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-8488081073",
+            "contactType": "Customer Service",
+            "email": "info@staffindiaconsultancy.com",
+            "areaServed": "IN",
+            "availableLanguage": "English"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "304, 3rd Floor, Silverline Complex, Sayajigunj",
+            "addressLocality": "Vadodara",
+            "addressRegion": "Gujarat",
+            "postalCode": "390020",
+            "addressCountry": "IN"
+        }
+    }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <header class="bg-blue-800 text-white sticky top-0 z-50">
+        
+<nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+    <a href="#home" class="flex items-center space-x-2">
+        <img src="/logo.png" alt="Staff India Logo" class="h-10">
+        <span class="text-2xl font-bold">Staff India Consultancy</span>
+    </a>
+    <button id="menu-toggle" class="text-white md:hidden focus:outline-none">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+    <ul id="menu" class="hidden md:flex space-x-6">
+        <li><a href="#home" class="hover:text-blue-200">Home</a></li>
+        <li><a href="#services" class="hover:text-blue-200">Services</a></li>
+        <li><a href="#about" class="hover:text-blue-200">About</a></li>
+        <li><a href="#blog" class="hover:text-blue-200">Blog</a></li>
+        <li><a href="#contact" class="hover:text-blue-200">Contact</a></li>
+    </ul>
+</nav>
+<script>
+    const menuToggle = document.getElementById("menu-toggle");
+    const menu = document.getElementById("menu");
+
+    menuToggle.addEventListener("click", () => {
+        menu.classList.toggle("hidden");
+        menu.classList.toggle("flex");
+        menu.classList.toggle("flex-col");
+        menu.classList.toggle("space-y-4");
+        menu.classList.toggle("mt-4");
+    });
+</script>
+
+    </header>
+
+    <main>
+        <section id="home" class="bg-blue-600 text-white py-20">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-4xl font-bold mb-4">Revolutionizing Recruitment Across India</h2>
+                <p class="text-lg mb-6">Founded in 2020, Staff India Consultancy transforms recruitment with innovative HR and staffing solutions for businesses across India in IT, healthcare, banking, and more.</p>
+                <a href="#contact" class="bg-white text-blue-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-200">Get Started Today!</a>
+            </div>
+        </section>
+
+        <section id="services" class="py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12">Our Services</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-2">Recruitment & Placement</h3>
+                        <p>Connect with top talent through our contingency search and campus selection services, tailored for businesses across India.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-2">IT Staff Augmentation</h3>
+                        <p>Scale your IT team with flexible, cost-effective staffing solutions designed for Vadodara’s tech industry.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-2">Outsourcing Solutions</h3>
+                        <p>Streamline operations with Recruitment Process Outsourcing, payroll management, and compliance handling.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-2">HR Consulting & Training</h3>
+                        <p>Boost workforce efficiency with talent development, employee assessments, and optimization services.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-2">Temporary & Permanent Staffing</h3>
+                        <p>Flexible staffing solutions to meet short-term and long-term business needs across industries.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-2">Customized HR Solutions</h3>
+                        <p>Tailored HR services for industries like healthcare, banking, and IT, ensuring seamless workforce integration.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="bg-gray-200 py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12">About Staff India Consultancy</h2>
+                <p class="text-lg mb-6">Established in 2020, Staff India Consultancy is a Vadodara-based recruitment agency revolutionizing the industry with innovative, customized staffing solutions for IT, healthcare, banking, and more.</p>
+                <h3 class="text-2xl font-semibold mb-4">Our Core Values</h3>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>Quality:</strong> Delivering superior recruitment services for employers and job seekers.</li>
+                    <li><strong>Innovation & Courage:</strong> Adapting to industry trends with bold, forward-thinking solutions.</li>
+                    <li><strong>Professionalism:</strong> Upholding integrity, accountability, and responsibility in all operations.</li>
+                    <li><strong>Partnership & Trust:</strong> Building lasting relationships through transparency and collaboration.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="blog" class="py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12">Blog</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <article class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-2">Top 5 Challenges in IT Recruitment</h3>
+                        <p>Discover how Staff India solves IT hiring challenges across India with innovative staffing solutions.</p>
+                        <a href="#blog-it" class="text-blue-600 hover:underline">Read More</a>
+                    </article>
+                    <article class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-2">Why Outsource Payroll Management?</h3>
+                        <p>Learn how outsourcing payroll in India saves time and ensures compliance.</p>
+                        <a href="#blog-payroll" class="text-blue-600 hover:underline">Read More</a>
+                    </article>
+                    <article class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-2">Attracting Healthcare Talent</h3>
+                        <p>Explore strategies to hire top healthcare professionals in Gujarat.</p>
+                        <a href="#blog-healthcare" class="text-blue-600 hover:underline">Read More</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="blog-it" class="bg-gray-100 py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-6">Top 5 Challenges in IT Recruitment and How Staff India Solves Them</h2>
+                <p class="mb-4">India’s IT sector is thriving, but hiring skilled professionals remains a challenge. From talent shortages to high costs, businesses face obstacles in building strong IT teams. Staff India Consultancy, based in Vadodara, offers innovative solutions to streamline IT recruitment.</p>
+                <ul class="list-decimal pl-6 space-y-4">
+                    <li><strong>Finding Skilled IT Talent:</strong> With demand for developers and engineers soaring, our IT staff augmentation service connects businesses across India with pre-vetted professionals, ensuring quick access to top talent.</li>
+                    <li><strong>Time-Consuming Hiring Processes:</strong> Traditional recruitment can take weeks. Our Recruitment Process Outsourcing (RPO) accelerates hiring with tailored strategies, saving you time and resources.</li>
+                    <li><strong>High Recruitment Costs:</strong> In-house hiring is expensive. Our cost-effective solutions, like campus selection and bulk hiring, reduce costs while maintaining quality.</li>
+                    <li><strong>Candidate Retention:</strong> High turnover disrupts projects. Our employee assessments ensure better candidate-job fit, boosting retention.</li>
+                    <li><strong>Keeping Up with Trends:</strong> The IT industry evolves rapidly. Our innovative methodologies adapt to trends, delivering future-ready staffing solutions.</li>
+                </ul>
+                <p class="mt-4">Need IT talent in Vadodara? Contact us at <a href="mailto:info@staffindiaconsultancy.com" class="text-blue-600 hover:underline">info@staffindiaconsultancy.com</a> or call <a href="tel:+918488081073" class="text-blue-600 hover:underline">8488081073</a> today!</p>
+            </div>
+        </section>
+
+        <section id="blog-payroll" class="py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-6">Why Outsource Payroll Management in Vadodara?</h2>
+                <p class="mb-4">Payroll management is critical but complex for businesses across India. Outsourcing to Staff India Consultancy saves time, ensures compliance, and boosts efficiency.</p>
+                <h3 class="text-2xl font-semibold mb-2">Benefits of Payroll Outsourcing</h3>
+                <p class="mb-4">Our services handle tax and labor law compliance, reduce costs, and ensure error-free payroll processing for businesses of all sizes.</p>
+                <h3 class="text-2xl font-semibold mb-2">Staff India’s Expertise</h3>
+                <p class="mb-4">Based in Sayajigunj, Vadodara, we offer customized payroll solutions, from startups to enterprises, ensuring seamless operations.</p>
+                <p class="mt-4">Streamline your payroll! Call <a href="tel:+918488081073" class="text-blue-600 hover:underline">8488081073</a> or email <a href="mailto:info@staffindiaconsultancy.com" class="text-blue-600 hover:underline">info@staffindiaconsultancy.com</a>.</p>
+            </div>
+        </section>
+
+        <section id="blog-healthcare" class="bg-gray-100 py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold mb-6">How to Attract Top Healthcare Talent in Gujarat</h2>
+                <p class="mb-4">Gujarat’s healthcare sector is growing, but attracting skilled professionals is tough. Staff India Consultancy delivers tailored recruitment solutions for hospitals and clinics.</p>
+                <h3 class="text-2xl font-semibold mb-2">Strategies for Healthcare Hiring</h3>
+                <p class="mb-4">Our campus selection taps into medical colleges, while employee assessments ensure the best candidate fit.</p>
+                <h3 class="text-2xl font-semibold mb-2">Staff India’s Expertise</h3>
+                <p class="mb-4">Since 2020, we’ve helped healthcare providers across India build strong teams with our industry-specific recruitment services.</p>
+                <p class="mt-4">Need healthcare talent? Email <a href="mailto:info@staffindiaconsultancy.com" class="text-blue-600 hover:underline">info@staffindiaconsultancy.com</a> or call <a href="tel:+918488081073" class="text-blue-600 hover:underline">8488081073</a>.</p>
+            </div>
+        </section>
+
+        <section id="contact" class="py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-bold text-center mb-12">Contact Us</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-4">Get in Touch</h3>
+                        <p class="mb-2">304, 3rd Floor, Silverline Complex, Sayajigunj, India 390020</p>
+                        <p class="mb-2">Phone: <a href="tel:+918488081073" class="text-blue-600 hover:underline">+91-8488081073</a></p>
+                        <p class="mb-2">Email: <a href="mailto:info@staffindiaconsultancy.com" class="text-blue-600 hover:underline">info@staffindiaconsultancy.com</a></p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-4">General Inquiry</h3>
+                        <div>
+                            <input type="text" placeholder="Name" class="w-full p-3 mb-4 border rounded" aria-label="Name">
+                            <input type="email" placeholder="Email" class="w-full p-3 mb-4 border rounded" aria-label="Email">
+                            <textarea placeholder="Message" class="w-full p-3 mb-4 border rounded" rows="4" aria-label="Message"></textarea>
+                            <button class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700">Send Message</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-12">
+                    <h3 class="text-2xl font-semibold mb-4 text-center">Business Lead Form</h3>
+                    <div class="max-w-lg mx-auto">
+                        <input type="text" placeholder="Business Name" class="w-full p-3 mb-4 border rounded" aria-label="Business Name">
+                        <input type="email" placeholder="Business Email" class="w-full p-3 mb-4 border rounded" aria-label="Business Email">
+                        <select class="w-full p-3 mb-4 border rounded" aria-label="Select Industry">
+                            <option>Select Industry</option>
+                            <option>Information Technology</option>
+                            <option>Healthcare & Pharmaceuticals</option>
+                            <option>Banking & Financial Services</option>
+                            <option>Retail, Logistics & E-commerce</option>
+                            <option>Other</option>
+                        </select>
+                        <select class="w-full p-3 mb-4 border rounded" aria-label="Select Service Needed">
+                            <option>Select Service Needed</option>
+                            <option>Recruitment & Placement</option>
+                            <option>IT Staff Augmentation</option>
+                            <option>Outsourcing Solutions</option>
+                            <option>HR Consulting & Training</option>
+                            <option>Temporary & Permanent Staffing</option>
+                            <option>Customized HR Solutions</option>
+                        </select>
+                        <button class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700">Submit Lead</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-blue-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2025 Staff India Consultancy. All rights reserved.</p>
+            <p class="mt-2">304, 3rd Floor, Silverline Complex, Sayajigunj, India 390020</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
